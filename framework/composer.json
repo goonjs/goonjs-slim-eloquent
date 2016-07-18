@@ -1,0 +1,22 @@
+{
+  "require": {
+    "slim/slim": "~2.6",
+    "illuminate/database": "5.*",
+    "illuminate/events": "^5.1",
+    "robmorgan/phinx": "^0.5.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.6"
+  },
+  "autoload": {
+    "classmap": [
+      "app/bootstrap",
+      "app/exception",
+      "app/helper",
+      "app/middleware",
+      "app/model",
+      "app/repository",
+      "app/controller"
+    ]
+  }
+}
