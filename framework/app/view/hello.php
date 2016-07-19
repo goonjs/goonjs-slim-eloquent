@@ -1,8 +1,6 @@
 <html>
     <head>
         <title>GoonJS Micro-framework</title>
-        <link rel="stylesheet" type="text/css" href="/assets/fonts/hotel-icons/flaticon.css"/>
-        <script src="/assets/js/libs.js"></script>
     </head>
     <body style="text-align:center">
         <h1>Welcome GoonJS Micro-framework</h1>
