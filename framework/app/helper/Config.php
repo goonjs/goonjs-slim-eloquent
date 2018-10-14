@@ -2,11 +2,11 @@
 
 class Config
 {
-    private $mode;
+    private $app;
 
-    public function __construct($mode)
+    public function __construct($app)
     {
-        $this->mode = $mode;
+        $this->app = $app;
     }
 
     public function load($configName)
@@ -18,7 +18,7 @@ class Config
         }
         $config = require($configPath);
 
-        $injectionConfigPath = __CONFIG__ . '/' . $this->mode . '/' . $configName . '.php';
+        $injectionConfigPath = __CONFIG__ . '/' . $this->app . '/' . $configName . '.php';
         if (file_exists($injectionConfigPath)) {
             $injectionConfig = require($injectionConfigPath);
 

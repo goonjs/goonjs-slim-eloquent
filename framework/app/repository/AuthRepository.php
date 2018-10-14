@@ -3,7 +3,7 @@
 /**
  * authenticate user
  */
-class AuthRepository
+class AuthRepository extends BaseRepository
 {
     public function loginAttempt($username, $password)
     {
@@ -28,7 +28,7 @@ class AuthRepository
 
     public function logout()
     {
-        $app = \Slim\Slim::getInstance();
+        $app = $this->app::getInstance();
 
         $app->deleteCookie('user');
         $app->deleteCookie('hash');
@@ -41,7 +41,7 @@ class AuthRepository
 
     private function login(User $user)
     {
-        $app = \Slim\Slim::getInstance();
+        $app = $this->app::getInstance();
 
         $userData = [
             'id'       => $user->id,
@@ -62,7 +62,7 @@ class AuthRepository
 
     public function isLoggedIn()
     {
-        $app = \Slim\Slim::getInstance();
+        $app = $this->app::getInstance();
 
         $userData = json_decode($app->getEncryptedCookie('user'), true);
         $hash     = $app->getEncryptedCookie('hash');
@@ -76,7 +76,7 @@ class AuthRepository
 
     public function getCurrentUser()
     {
-        $app = \Slim\Slim::getInstance();
+        $app = $this->app::getInstance();
 
         return json_decode($app->getEncryptedCookie('user'), true);
     }

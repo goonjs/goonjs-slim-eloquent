@@ -1,6 +1,6 @@
 <?php
 
-class UserRepository
+class UserRepository extends BaseRepository
 {
     /**
      * @param $userId
