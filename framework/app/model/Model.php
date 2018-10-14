@@ -39,4 +39,15 @@ class Model extends Eloquent
             });
         }
     }
+
+    public function toArray(){
+        $array = parent::toArray();
+        $camelArray = [];
+
+        foreach($array as $name => $value){
+            $camelArray[camel_case($name)] = $value;
+        }
+
+        return $camelArray;
+    }
 }

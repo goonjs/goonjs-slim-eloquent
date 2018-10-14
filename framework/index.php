@@ -33,7 +33,6 @@ $app = new \Slim\Slim(array(
 ));
 
 // ---- Add Middle Wares ---- //
-$app->add(new CamelCaseKeyResponseMiddleWare());
 $app->add(new SnakeCaseKeyRequestMiddleWare());
 
 // ---- Yolk Skeletons ---- //
