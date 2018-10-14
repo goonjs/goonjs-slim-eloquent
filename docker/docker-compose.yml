@@ -1,0 +1,61 @@
+version: '3'
+services:
+    nginx:
+        image: nginx:alpine
+        volumes:
+            - "./docker/etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+            - "./src:/var/www/html"
+            - "./docker/etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
+        ports:
+            - "app_port:80"
+        environment:
+            - NGINX_HOST=${NGINX_HOST}
+        command: /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+        depends_on:
+            - php
+            - mysqldb
+    php:
+        image: bitnami/php-fpm:7.0
+        working_dir: /var/www/html
+        volumes:
+            - "./docker/etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+            - "./src:/var/www/html"
+            - "./.env:/var/www/html/.env"
+        depends_on:
+            - mysqldb
+    composer:
+        image: composer
+        volumes:
+            - "./src:/var/www/html"
+        working_dir: /var/www/html
+        command: install
+    node:
+        image: node:${NODE_VERSION}
+        restart: "on-failure"
+        volumes:
+            - "./src:/var/www/html"
+        working_dir: /var/www/html
+        command: /bin/sh -c "yarn"
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - "pma_port:80"
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=${COMPOSE_PROJECT_NAME}-${MYSQL_HOST}
+        restart: always
+        depends_on:
+            - mysqldb
+    mysqldb:
+        image: mysql:${MYSQL_VERSION}
+        container_name: ${COMPOSE_PROJECT_NAME}-${MYSQL_HOST}
+        restart: always
+        env_file:
+            - ".env"
+        environment:
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        ports:
+            - "mysql_port:3306"
